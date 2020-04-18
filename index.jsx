@@ -1,17 +1,63 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View} from 'react-native';
+import {AppRegistry, StyleSheet, Button, View} from 'react-native';
+import {TodoList} from './TodoList.jsx'
+import {AddTodo} from './AddTodo.jsx'
 
 type Props = {};
+
+let index = 0;
 export default class MyApp extends Component<Props> {
+  
+  constructor()
+  {
+    super();
+    this.state = {
+      inputValue: '',
+      todolist: []
+    };
+    this.deletetodo = this.deletetodo.bind(this)
+    this.toggletodo = this.toggletodo.bind(this)
+    this.updateTodo = this.updateTodo.bind(this)
+    this.addTodo = this.addTodo.bind(this)
+  }
+  
+  deletetodo(index){
+    this.setState({
+      todolist: this.state.todolist.filter(todo => todo.index != index)
+    })
+  }
+  
+  toggletodo(todo)
+  {
+     
+  }
+  
+  updateTodo(inputValue)
+  {
+    this.setState({
+      inputValue: inputValue
+    })
+  }
+  
+  addTodo()
+  {
+    let incrementalindex = index + 1;
+    this.setState({
+      todolist: [...this.state.todolist, {
+        text: this.state.inputValue,
+        complete: false,
+        index: incrementalindex
+      }],
+      todo: ''
+    })
+  }
+  
+  
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.js
-        </Text>
+        <AddTodo inputValue={this.state.inputValue} addTodo={this.addTodo} updateTodo={this.updateTodo} />
+        <TodoList todolist={this.state.todolist} deletetodo={this.deletetodo} toggletodo={this.toggletodo}/>
       </View>
     );
   }
